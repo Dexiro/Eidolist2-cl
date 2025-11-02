@@ -21,44 +21,34 @@ include(ExternalProject)
 project ("eidolist2")
 
 list(APPEND HASH_LIBRARY_SOURCES
-# "external/hash-library/crc32.cpp"
-# "external/hash-library/crc32.h"
-# "external/hash-library/hash.h"
-# "external/hash-library/hmac.h"
-# "external/hash-library/keccak.cpp"
-# "external/hash-library/keccak.h"
-# "external/hash-library/md5.cpp"
-# "external/hash-library/md5.h"
-# "external/hash-library/sha1.cpp"
-# "external/hash-library/sha1.h"
-# "external/hash-library/sha3.cpp"
-# "external/hash-library/sha3.h"
-# "external/hash-library/sha256.cpp"
-# "external/hash-library/sha256.h"
+lib/hash-library/md5.cpp
+lib/hash-library/md5.h
+lib/hash-library/sha1.cpp
+lib/hash-library/sha1.h
 )
 
 list(APPEND NLOHMANN_SOURCES
-# external/nlohmann/json.hpp
+lib/nlohmann/single_include/nlohmann/json.hpp
 )
 
 list(APPEND IMGUI_SOURCES
-# external/imgui/imstb_truetype.h
-# external/imgui/imstb_textedit.h
-# external/imgui/imstb_rectpack.h
-# external/imgui/imgui_widgets.cpp
-# external/imgui/imgui_tables.cpp
-# external/imgui/imgui_internal.h
-# external/imgui/imgui_draw.cpp
-# external/imgui/imgui_demo.cpp
-# external/imgui/imgui.h
-# external/imgui/imgui.cpp
-# external/imgui/imconfig.h
-# external/imgui/imgui_impl_sdlrenderer3.h
-# external/imgui/imgui_impl_sdlrenderer3.cpp
-# external/imgui/imgui_impl_sdl3.h
-# external/imgui/imgui_impl_sdl3.cpp
-# external/imgui/imgui_stdlib.h
-# external/imgui/imgui_stdlib.cpp
+lib/imgui/imstb_truetype.h
+lib/imgui/imstb_textedit.h
+lib/imgui/imstb_rectpack.h
+lib/imgui/imgui_widgets.cpp
+lib/imgui/imgui_tables.cpp
+lib/imgui/imgui_internal.h
+lib/imgui/imgui_draw.cpp
+lib/imgui/imgui_demo.cpp
+lib/imgui/imgui.h
+lib/imgui/imgui.cpp
+lib/imgui/imconfig.h
+lib/imgui/backends/imgui_impl_sdlrenderer3.h
+lib/imgui/backends/imgui_impl_sdlrenderer3.cpp
+lib/imgui/backends/imgui_impl_sdl3.h
+lib/imgui/backends/imgui_impl_sdl3.cpp
+lib/imgui/misc/cpp/imgui_stdlib.h
+lib/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 list(APPEND EIDOLIST2_SOURCES
@@ -134,7 +124,7 @@ list(APPEND EIDOLIST2_SOURCES
 )
 
 # Add source to this project's executable.
-add_executable (eidolist2 "eidolist2-main.cpp" "eidolist2-main.h" ${EIDOLIST2_SOURCES} ${IMGUI_SOURCES} ${VMATH_SOURCES} ${NLOHMANN_SOURCES} ${HASH_LIBRARY_SOURCES} )
+add_executable (eidolist2 "eidolist2-main.cpp" "eidolist2-main.h" ${EIDOLIST2_SOURCES} ${IMGUI_SOURCES} ${NLOHMANN_SOURCES} ${HASH_LIBRARY_SOURCES} )
 
 # if (${BUILD_DOCTEST})
 # 	add_executable(tests "src/UnitTests/main.cpp" "src/TilesetHelper.h" "src/TilesetHelper.cpp" ${VMATH_SOURCES}  "src/GLMIncludes.h")
@@ -143,10 +133,14 @@ add_executable (eidolist2 "eidolist2-main.cpp" "eidolist2-main.h" ${EIDOLIST2_SO
 # 	target_link_libraries(tests PRIVATE doctest::doctest)
 # endif()
 
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET eidolist2 PROPERTY CXX_STANDARD 20)
 endif()
 
+find_path("imgui_impl_sdlrenderer3.h" "lib/imgui/backends/imgui_impl_sdlrenderer3.h")
+find_path("imgui_impl_sdl3.h" "lib/imgui/backends/imgui_impl_sdl3.h")
+find_path("imgui_stdlib.h" "lib/imgui/misc/cpp/imgui_stdlib.h")
 
 set(SDL_STATIC ON)
 add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
