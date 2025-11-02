@@ -52,11 +52,15 @@ lib/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 list(APPEND EIDOLIST2_SOURCES
+
+src/EidolistCore.h
+src/EidolistCore.cpp
+
 src/includes/LCFIncludes.h
 src/includes/GLMIncludes.h 
 src/includes/StdIncludes.h
 src/includes/CommonIncludes.h
-src/useful/Types.h
+
 src/useful/SDLTypes.h
 src/useful/SDLTypes.cpp
 src/useful/LCFTypes.h
@@ -64,68 +68,64 @@ src/useful/SDLFun.h
 src/useful/SDLFun.cpp
 src/useful/MathFun.h
 src/useful/MathFun.cpp
-src/EidolistCore.h
-src/EidolistCore.cpp
-# src/AssetLoader.h
-# src/AssetLoader.cpp
+src/useful/Rect.h
+src/useful/Rect.cpp
+src/useful/ImguiStyle.h 
+src/useful/ImguiStyle.cpp
+src/useful/TilesetHelper.h
+src/useful/TilesetHelper.cpp
+src/useful/TilesetHelper_Texture.h
+src/useful/TilesetHelper_Texture.cpp
+src/useful/WindowArea.h
+src/useful/WindowArea.cpp
+
 # src/MapDiff.h
 # src/MapDiff.cpp
-# src/Tileset.h
-# src/Tileset.cpp
-# src/TilesetHelper.h
-# src/TilesetHelper.cpp
-# src/TilesetHelper_Texture.h
-# src/TilesetHelper_Texture.cpp
-# src/Transform.h
-# src/Transform.cpp
-# "src/Rect.h" 
-# "src/Rect.cpp"
-# "src/system/MessageHandler.h" 
-# "src/system/MessageHandler.cpp" 
-# "src/gui/MainMenuGui.h" 
-# "src/gui/MainMenuGui.cpp" 
-# "src/obj/MapObj.h" 
-# "src/obj/MapObj.cpp" 
-# "src/obj/MapComparisonObj.h" 
-# "src/obj/MapComparisonObj.cpp" 
-# "src/gui/IGuiMenu.h" 
-# "src/projectdata/Project.h"
-# "src/projectdata/Project.cpp"
-# "src/projectdata/ProjectData.h" 
-# "src/projectdata/LoadProject.h" 
-# "src/projectdata/LoadProject.cpp"
-# "src/projectdata/ProjectGui.h" 
-# "src/projectdata/ProjectGui.cpp" 
-# "src/Spritesheet.h" 
-# "src/Spritesheet.cpp" 
-# "src/MapLayers.h" 
-# "src/MapLayers.cpp" 
-# "src/gui/ProjectSelectDialog.h" 
-# "src/gui/ProjectSelectDialog.cpp" 
-# "src/WindowArea.h" 
-# "src/WindowArea.cpp"  
-# "src/obj/BaseObj.h" 
-# "src/obj/BaseObj.cpp" 
 
+src/obj/MapObj.h
+src/obj/MapObj.cpp 
+src/obj/MapComparisonObj.h
+src/obj/MapComparisonObj.cpp
+src/obj/Spritesheet.h
+src/obj/Spritesheet.cpp
+src/obj/BaseObj.h
+src/obj/BaseObj.cpp
+src/obj/CompileMap.h
+src/obj/CompileMap.cpp
+
+src/projectdata/Project.h
+src/projectdata/Project.cpp
+src/projectdata/ProjectData.h
+src/projectdata/ProjectData.cpp
+src/projectdata/LoadProject.h
+src/projectdata/LoadProject.cpp
+src/projectdata/CompareProjectData.h
+src/projectdata/CompareProjectData.cpp 
+src/projectdata/ListProjectData.h
+src/projectdata/ListProjectData.cpp
+src/projectdata/AutotileData.h
+src/projectdata/AutotileData.cpp
+
+src/gui/MapLayers.h
+src/gui/MapLayers.cpp
+src/gui/ProjectGui.h
+src/gui/ProjectGui.cpp
+src/gui/ProjectSelectDialog.h
+src/gui/ProjectSelectDialog.cpp
+
+src/meta/WikiData.h 
+src/meta/WikiData.cpp 
+
+src/io/AssetLoader.h
+src/io/AssetLoader.cpp
 # "src/io/FileHasher.h" 
 # "src/io/FileHasher.cpp" 
-# "src/gui/ImguiStyle.h" 
-# "src/graph/WorldGraph.h" 
-# "src/graph/WorldGraph.cpp" 
-# "src/graph/WikiData.h" 
-# "src/graph/WikiData.cpp" 
 # "src/io/Cache.h" 
 # "src/io/Cache.cpp" 
-# "src/obj/CompileMap.h" 
-# "src/obj/CompileMap.cpp" 
-# "src/AutotileData.cpp" 
-# "src/projectdata/ProjectData.cpp" 
-# "src/gui/ImguiStyle.cpp" 
-# "src/projectdata/CompareProjectData.h" 
-# "src/projectdata/CompareProjectData.cpp"  
-# "src/projectdata/ListProjectData.h" 
-# "src/projectdata/ListProjectData.cpp" 
 # "src/io/FileIO.h"
+
+# "src/graph/WorldGraph.h" 
+# "src/graph/WorldGraph.cpp" 
 )
 
 # Add source to this project's executable.
@@ -144,7 +144,7 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 
-target_include_directories(eidolist2 PRIVATE src src/includes src/useful lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
+target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
 
 set(SDL_STATIC ON)
 add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
