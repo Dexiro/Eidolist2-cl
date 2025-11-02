@@ -52,16 +52,26 @@ lib/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 list(APPEND EIDOLIST2_SOURCES
+src/includes/LCFIncludes.h
+src/includes/GLMIncludes.h 
+src/includes/StdIncludes.h
+src/includes/CommonIncludes.h
+src/useful/Types.h
+src/useful/SDLTypes.h
+src/useful/SDLTypes.cpp
+src/useful/LCFTypes.h
+src/useful/SDLFun.h
+src/useful/SDLFun.cpp
+src/useful/MathFun.h
+src/useful/MathFun.cpp
+src/EidolistCore.h
+src/EidolistCore.cpp
 # src/AssetLoader.h
 # src/AssetLoader.cpp
 # src/MapDiff.h
 # src/MapDiff.cpp
-# src/Types.h
 # src/Tileset.h
 # src/Tileset.cpp
-# src/CommonIncludes.h
-src/SDLTypes.h
-src/SDLTypes.cpp
 # src/TilesetHelper.h
 # src/TilesetHelper.cpp
 # src/TilesetHelper_Texture.h
@@ -86,10 +96,6 @@ src/SDLTypes.cpp
 # "src/projectdata/LoadProject.cpp"
 # "src/projectdata/ProjectGui.h" 
 # "src/projectdata/ProjectGui.cpp" 
-# "src/LCFIncludes.h" 
-# "src/LCFTypes.h"
-# "src/core/EidolistCore.h" 
-# "src/core/EidolistCore.cpp" 
 # "src/Spritesheet.h" 
 # "src/Spritesheet.cpp" 
 # "src/MapLayers.h" 
@@ -100,7 +106,7 @@ src/SDLTypes.cpp
 # "src/WindowArea.cpp"  
 # "src/obj/BaseObj.h" 
 # "src/obj/BaseObj.cpp" 
-"src/StdIncludes.h" 
+
 # "src/io/FileHasher.h" 
 # "src/io/FileHasher.cpp" 
 # "src/gui/ImguiStyle.h" 
@@ -110,7 +116,6 @@ src/SDLTypes.cpp
 # "src/graph/WikiData.cpp" 
 # "src/io/Cache.h" 
 # "src/io/Cache.cpp" 
-# "src/GLMIncludes.h" 
 # "src/obj/CompileMap.h" 
 # "src/obj/CompileMap.cpp" 
 # "src/AutotileData.cpp" 
@@ -139,7 +144,7 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 
-target_include_directories(eidolist2 PRIVATE src lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
+target_include_directories(eidolist2 PRIVATE src src/includes src/useful lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
 
 set(SDL_STATIC ON)
 add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
