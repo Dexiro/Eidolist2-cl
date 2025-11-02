@@ -6,14 +6,9 @@
 #include <iostream>
 #include "src/SDLTypes.h"
 
-//#include "src/MapDiff.h"
-//#include "src/AssetLoader.h"
-//#include "src/Tileset.h"
-//#include "src/TilesetHelper.h"
-//#include "src/TilesetHelper_Texture.h"
-//#include "src/Transform.h"
-//#include "src/projectdata/ProjectGui.h"
-//#include "src/obj/MapObj.h"
+#include "imgui.h"
+#include "imgui_impl_sdl3.h"
+#include "imgui_impl_sdlrenderer3.h"
 
 
 // TODO: Reference additional headers your program requires here.

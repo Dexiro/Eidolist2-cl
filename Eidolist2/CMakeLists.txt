@@ -60,8 +60,8 @@ list(APPEND EIDOLIST2_SOURCES
 # src/Tileset.h
 # src/Tileset.cpp
 # src/CommonIncludes.h
-# src/SDLTypes.h
-# src/SDLTypes.cpp
+src/SDLTypes.h
+src/SDLTypes.cpp
 # src/TilesetHelper.h
 # src/TilesetHelper.cpp
 # src/TilesetHelper_Texture.h
@@ -100,7 +100,7 @@ list(APPEND EIDOLIST2_SOURCES
 # "src/WindowArea.cpp"  
 # "src/obj/BaseObj.h" 
 # "src/obj/BaseObj.cpp" 
-# "src/StdIncludes.h" 
+"src/StdIncludes.h" 
 # "src/io/FileHasher.h" 
 # "src/io/FileHasher.cpp" 
 # "src/gui/ImguiStyle.h" 
@@ -138,9 +138,8 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET eidolist2 PROPERTY CXX_STANDARD 20)
 endif()
 
-find_path("imgui_impl_sdlrenderer3.h" "lib/imgui/backends/imgui_impl_sdlrenderer3.h")
-find_path("imgui_impl_sdl3.h" "lib/imgui/backends/imgui_impl_sdl3.h")
-find_path("imgui_stdlib.h" "lib/imgui/misc/cpp/imgui_stdlib.h")
+
+target_include_directories(eidolist2 PRIVATE src lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
 
 set(SDL_STATIC ON)
 add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
