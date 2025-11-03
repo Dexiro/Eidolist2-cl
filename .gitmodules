@@ -1,28 +1,28 @@
 [submodule "Eidolist2/submodule/hash-library"]
-	path = Eidolist2/submodule/hash-library
+	path = Eidolist2/external/hash-library
 	url = https://github.com/stbrumme/hash-library.git
 	branch = master
 [submodule "Eidolist2/submodule/nlohmann"]
-	path = Eidolist2/submodule/nlohmann
+	path = Eidolist2/external/nlohmann
 	url = https://github.com/nlohmann/json.git
 	branch = master
 [submodule "Eidolist2/submodule/imgui"]
-	path = Eidolist2/submodule/imgui
+	path = Eidolist2/external/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = master
 [submodule "Eidolist2/submodule/SDL"]
-	path = Eidolist2/submodule/SDL
+	path = Eidolist2/external/SDL
 	url = https://github.com/libsdl-org/SDL.git
 	branch = main
 [submodule "Eidolist2/submodule/SDL_ttf"]
-	path = Eidolist2/submodule/SDL_ttf
+	path = Eidolist2/external/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf.git
 	branch = main
 [submodule "Eidolist2/submodule/SDL_image"]
-	path = Eidolist2/submodule/SDL_image
+	path = Eidolist2/external/SDL_image
 	url = https://github.com/libsdl-org/SDL_image.git
 	branch = main
 [submodule "Eidolist2/submodule/liblcf"]
-	path = Eidolist2/submodule/liblcf
+	path = Eidolist2/external/liblcf
 	url = https://github.com/EasyRPG/liblcf.git
 	branch = master

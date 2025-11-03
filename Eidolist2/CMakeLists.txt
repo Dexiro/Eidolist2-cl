@@ -21,34 +21,34 @@ include(externalProject)
 project ("eidolist2")
 
 list(APPEND HASH_LIBRARY_SOURCES
-submodule/hash-library/md5.cpp
-submodule/hash-library/md5.h
-submodule/hash-library/sha1.cpp
-submodule/hash-library/sha1.h
+external/hash-library/md5.cpp
+external/hash-library/md5.h
+external/hash-library/sha1.cpp
+external/hash-library/sha1.h
 )
 
 list(APPEND NLOHMANN_SOURCES
-submodule/nlohmann/single_include/nlohmann/json.hpp
+external/nlohmann/single_include/nlohmann/json.hpp
 )
 
 list(APPEND IMGUI_SOURCES
-submodule/imgui/imstb_truetype.h
-submodule/imgui/imstb_textedit.h
-submodule/imgui/imstb_rectpack.h
-submodule/imgui/imgui_widgets.cpp
-submodule/imgui/imgui_tables.cpp
-submodule/imgui/imgui_internal.h
-submodule/imgui/imgui_draw.cpp
-submodule/imgui/imgui_demo.cpp
-submodule/imgui/imgui.h
-submodule/imgui/imgui.cpp
-submodule/imgui/imconfig.h
-submodule/imgui/backends/imgui_impl_sdlrenderer3.h
-submodule/imgui/backends/imgui_impl_sdlrenderer3.cpp
-submodule/imgui/backends/imgui_impl_sdl3.h
-submodule/imgui/backends/imgui_impl_sdl3.cpp
-submodule/imgui/misc/cpp/imgui_stdlib.h
-submodule/imgui/misc/cpp/imgui_stdlib.cpp
+external/imgui/imstb_truetype.h
+external/imgui/imstb_textedit.h
+external/imgui/imstb_rectpack.h
+external/imgui/imgui_widgets.cpp
+external/imgui/imgui_tables.cpp
+external/imgui/imgui_internal.h
+external/imgui/imgui_draw.cpp
+external/imgui/imgui_demo.cpp
+external/imgui/imgui.h
+external/imgui/imgui.cpp
+external/imgui/imconfig.h
+external/imgui/backends/imgui_impl_sdlrenderer3.h
+external/imgui/backends/imgui_impl_sdlrenderer3.cpp
+external/imgui/backends/imgui_impl_sdl3.h
+external/imgui/backends/imgui_impl_sdl3.cpp
+external/imgui/misc/cpp/imgui_stdlib.h
+external/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 list(APPEND EIDOLIST2_SOURCES
@@ -146,11 +146,11 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 
-target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj submodule/imgui submodule/imgui/backends submodule/imgui/misc/cpp submodule/nlohmann/single_include/nlohmann submodule/hash-library submodule/liblcf/src )
+target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj external/imgui external/imgui/backends external/imgui/misc/cpp external/nlohmann/single_include/nlohmann external/hash-library external/liblcf/src )
 
 set(SDL_STATIC ON)
-add_subdirectory(submodule/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(submodule/SDL_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(external/SDL_ttf EXCLUDE_FROM_ALL)
 set(SDLIMAGE_AVIF OFF)
 set(SDLIMAGE_BMP  OFF)
 set(SDLIMAGE_GIF  OFF)
@@ -168,7 +168,7 @@ set(SDLIMAGE_WEBP OFF)
 set(SDLIMAGE_XCF  OFF)
 set(SDLIMAGE_XPM  OFF)
 set(SDLIMAGE_XV	  OFF)
-add_subdirectory(submodule/SDL_image EXCLUDE_FROM_ALL)
+add_subdirectory(external/SDL_image EXCLUDE_FROM_ALL)
 target_link_libraries(eidolist2 PRIVATE SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf SDL3::SDL3)
 
 find_package(unofficial-inih CONFIG REQUIRED)
@@ -188,7 +188,7 @@ target_link_libraries(eidolist2 PRIVATE glm::glm)
 
 option(BUILD_LIBLCF "For developers: Clone liblcf and build it along with the app." ON)
 if(BUILD_LIBLCF)
-	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/submodule/liblcf")
+	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/liblcf")
 	function(add_liblcf)
 		set(BUILD_SHARED_LIBS OFF)
 		set(LIBLCF_ENABLE_INSTALL OFF)
