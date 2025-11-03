@@ -1,7 +1,7 @@
 ﻿// eidolist2.cpp : Defines the entry point for the application.
 //
 #include "eidolist2-main.h"
-//#include "src/core/EidolistCore.h"
+#include "src/EidolistCore.h"
 #include <SDL3/SDL_main.h>
 
 using namespace std;
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 	//context.Fonts.push_back(ttf_font);
 	//context.TtfEngine = TTF_CreateRendererTextEngine(context.Renderer);
 
-	//std::unique_ptr<EidolistCore> eidolistCore = std::make_unique<EidolistCore>();
+	std::unique_ptr<EidolistCore> eidolistCore = std::make_unique<EidolistCore>();
 
 	if (bInitSDL)
 	{
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 		//eidolistCore->Run(context);
 	}
 
-	//eidolistCore.reset();
+	eidolistCore.reset();
 
 	//Free loaded image
 	SDL_DestroyTexture(context.ScreenTex);
@@ -69,48 +69,6 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
-
-
-//
-
-
-
-
-//void CheckLoadProjects(int& projectID, std::vector<std::shared_ptr<IGuiMenu>>& imguiMenus, std::vector<std::shared_ptr<LoadedProject>>& loadedProjects)
-//{
-//	if (!m_threadLock)
-//	{
-//		if (m_requestLoadProjects.size() > 0)
-//		{
-//			m_threadLock = true;
-//			for (std::string path : m_requestLoadProjects)
-//			{
-//				std::shared_ptr<ProjectData> projData = std::make_shared<ProjectData>();
-//				if (projData->LoadProject(path))
-//				{
-//					std::shared_ptr<LoadedProject> lproj = std::make_shared<LoadedProject>();
-//					lproj->m_projectData = projData;
-//
-//					std::shared_ptr<ProjectInfoGui> infoGui = std::make_shared<ProjectInfoGui>(lproj.get(), projectID++);
-//					imguiMenus.push_back(infoGui);
-//					loadedProjects.push_back(lproj);
-//				}
-//				else
-//				{
-//					projData.reset();
-//				}
-//			}
-//			m_requestLoadProjects.clear();
-//			m_threadLock = false;
-//		}
-//	}
-//}
-
-
-
 
 void InitSDL(bool& bInitSDL, SDLContext& context)
 {

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <iostream>
-#include "src/SDLTypes.h"
+#include "src/useful/SDLTypes.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"

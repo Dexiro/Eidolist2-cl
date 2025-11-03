@@ -4,6 +4,7 @@
 #include "LoadProject.h"
 
 #include "../obj/MapObj.h"
+#include "../obj/Spritesheet.h"
 
 struct Request
 {
@@ -39,7 +40,7 @@ public:
 protected:
 	void Reset();
 
-	std::array<PProjectData, 3> m_data;
+	PProjectData m_data;
 
 	std::vector<PMapObj> m_loadedMaps;
 	std::array<std::vector<PMapObj>, 3> m_loadedMapsByProject;

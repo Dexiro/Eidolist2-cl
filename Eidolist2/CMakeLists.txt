@@ -15,40 +15,40 @@ endif()
 set(CMAKE_TOOLCHAIN_FILE "C:/DevRepos/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 
-include(ExternalProject)
+include(externalProject)
 
 
 project ("eidolist2")
 
 list(APPEND HASH_LIBRARY_SOURCES
-lib/hash-library/md5.cpp
-lib/hash-library/md5.h
-lib/hash-library/sha1.cpp
-lib/hash-library/sha1.h
+submodule/hash-library/md5.cpp
+submodule/hash-library/md5.h
+submodule/hash-library/sha1.cpp
+submodule/hash-library/sha1.h
 )
 
 list(APPEND NLOHMANN_SOURCES
-lib/nlohmann/single_include/nlohmann/json.hpp
+submodule/nlohmann/single_include/nlohmann/json.hpp
 )
 
 list(APPEND IMGUI_SOURCES
-lib/imgui/imstb_truetype.h
-lib/imgui/imstb_textedit.h
-lib/imgui/imstb_rectpack.h
-lib/imgui/imgui_widgets.cpp
-lib/imgui/imgui_tables.cpp
-lib/imgui/imgui_internal.h
-lib/imgui/imgui_draw.cpp
-lib/imgui/imgui_demo.cpp
-lib/imgui/imgui.h
-lib/imgui/imgui.cpp
-lib/imgui/imconfig.h
-lib/imgui/backends/imgui_impl_sdlrenderer3.h
-lib/imgui/backends/imgui_impl_sdlrenderer3.cpp
-lib/imgui/backends/imgui_impl_sdl3.h
-lib/imgui/backends/imgui_impl_sdl3.cpp
-lib/imgui/misc/cpp/imgui_stdlib.h
-lib/imgui/misc/cpp/imgui_stdlib.cpp
+submodule/imgui/imstb_truetype.h
+submodule/imgui/imstb_textedit.h
+submodule/imgui/imstb_rectpack.h
+submodule/imgui/imgui_widgets.cpp
+submodule/imgui/imgui_tables.cpp
+submodule/imgui/imgui_internal.h
+submodule/imgui/imgui_draw.cpp
+submodule/imgui/imgui_demo.cpp
+submodule/imgui/imgui.h
+submodule/imgui/imgui.cpp
+submodule/imgui/imconfig.h
+submodule/imgui/backends/imgui_impl_sdlrenderer3.h
+submodule/imgui/backends/imgui_impl_sdlrenderer3.cpp
+submodule/imgui/backends/imgui_impl_sdl3.h
+submodule/imgui/backends/imgui_impl_sdl3.cpp
+submodule/imgui/misc/cpp/imgui_stdlib.h
+submodule/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 list(APPEND EIDOLIST2_SOURCES
@@ -88,6 +88,8 @@ src/obj/MapComparisonObj.h
 src/obj/MapComparisonObj.cpp
 src/obj/Spritesheet.h
 src/obj/Spritesheet.cpp
+src/obj/SpriteObj.h
+src/obj/SpriteObj.cpp
 src/obj/BaseObj.h
 src/obj/BaseObj.cpp
 src/obj/CompileMap.h
@@ -113,16 +115,16 @@ src/gui/ProjectGui.cpp
 src/gui/ProjectSelectDialog.h
 src/gui/ProjectSelectDialog.cpp
 
-src/meta/WikiData.h 
-src/meta/WikiData.cpp 
+src/projectdata/meta/WikiData.h 
+src/projectdata/meta/WikiData.cpp 
 
 src/io/AssetLoader.h
 src/io/AssetLoader.cpp
-# "src/io/FileHasher.h" 
-# "src/io/FileHasher.cpp" 
-# "src/io/Cache.h" 
-# "src/io/Cache.cpp" 
-# "src/io/FileIO.h"
+src/io/FileHasher.h 
+src/io/FileHasher.cpp
+"src/io/Cache.h"
+"src/io/Cache.cpp"
+src/io/FileIO.h
 
 # "src/graph/WorldGraph.h" 
 # "src/graph/WorldGraph.cpp" 
@@ -144,11 +146,11 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 
-target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj lib/imgui lib/imgui/backends lib/imgui/misc/cpp lib/nlohmann/single_include/nlohmann lib/hash-library lib/liblcf/src )
+target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj submodule/imgui submodule/imgui/backends submodule/imgui/misc/cpp submodule/nlohmann/single_include/nlohmann submodule/hash-library submodule/liblcf/src )
 
 set(SDL_STATIC ON)
-add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(lib/SDL_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(submodule/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(submodule/SDL_ttf EXCLUDE_FROM_ALL)
 set(SDLIMAGE_AVIF OFF)
 set(SDLIMAGE_BMP  OFF)
 set(SDLIMAGE_GIF  OFF)
@@ -166,7 +168,7 @@ set(SDLIMAGE_WEBP OFF)
 set(SDLIMAGE_XCF  OFF)
 set(SDLIMAGE_XPM  OFF)
 set(SDLIMAGE_XV	  OFF)
-add_subdirectory(lib/SDL_image EXCLUDE_FROM_ALL)
+add_subdirectory(submodule/SDL_image EXCLUDE_FROM_ALL)
 target_link_libraries(eidolist2 PRIVATE SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf SDL3::SDL3)
 
 find_package(unofficial-inih CONFIG REQUIRED)
@@ -186,19 +188,7 @@ target_link_libraries(eidolist2 PRIVATE glm::glm)
 
 option(BUILD_LIBLCF "For developers: Clone liblcf and build it along with the app." ON)
 if(BUILD_LIBLCF)
-	# liblcf is built as part of this cmake file
-	set(BUILD_LIBLCF_GIT "https://github.com/EasyRPG/liblcf.git")
-	set(BUILD_LIBLCF_BRANCH "master")
-	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
-
-	if(NOT EXISTS ${LIBLCF_PATH})
-		find_package(Git REQUIRED)
-		execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1" "--branch"
-			"${BUILD_LIBLCF_BRANCH}"
-			"${BUILD_LIBLCF_GIT}"
-			"${LIBLCF_PATH}")
-	endif()
-
+	set(LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/submodule/liblcf")
 	function(add_liblcf)
 		set(BUILD_SHARED_LIBS OFF)
 		set(LIBLCF_ENABLE_INSTALL OFF)
