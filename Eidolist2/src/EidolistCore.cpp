@@ -59,7 +59,7 @@ void EidolistCore::Init(SDLContext& context)
 
 	//color::PushStyleColor(ImGuiCol_MenuBarBg, CozyMossDark);
 	//color::PushStyleColor(ImGuiCol_FrameBg, CozyMossLight);
-	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 6);
+	//ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 6);
 
 	//ImVec4* colors = GetStyle().Colors;
 	//colors[ImGuiCol_TextDisabled] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
@@ -90,7 +90,6 @@ bool EidolistCore::Run(SDLContext& context)
 {
 	Init(context);
 
-	//MapTree tree("Nexus", m_data.m_spritesheet.get());
 	ImGuiIO& io = ImGui::GetIO();
 
 	m_data.m_updateTimer.start();
@@ -143,41 +142,36 @@ bool EidolistCore::Run(SDLContext& context)
 				ShowLayerMenu(context);
 
 			m_data.m_selectedObjects_hover.clear();
-			for (int projIndex = 0; projIndex < 3; projIndex++)
+
+			for (int mapIndex = 0; mapIndex < m_data.m_projectGui->NMapsLoaded(); mapIndex++)
 			{
-				if (m_data.m_projectGui->NMapsLoaded() <= 0)
-					continue;
-
-				for (int mapIndex = 0; mapIndex < m_data.m_projectGui->NMapsLoaded(); mapIndex++)
+				MapObj* obj = m_data.m_projectGui->GetMapObjByID(mapIndex);
+				if (obj)
 				{
-					MapObj* obj = m_data.m_projectGui->GetMapObjByID(mapIndex);
-					if (obj)
+					obj->Draw(context, m_data.m_worldPos, m_data.m_worldScale);
+					if (m_data.m_drag_select)
 					{
-						obj->Draw(context, m_data.m_worldPos, m_data.m_worldScale);
-						if (m_data.m_drag_select)
+						if (obj->RectCollision(m_data.m_selBox.m_dstRect, m_data.m_worldPos, m_data.m_worldScale))
 						{
-							if (obj->RectCollision(m_data.m_selBox.m_dstRect, m_data.m_worldPos, m_data.m_worldScale))
-							{
-								m_data.m_selectedObjects_hover.push_back(obj);
-								m_data.m_highlight.m_dstRect = obj->MapRect(m_data.m_worldPos, m_data.m_worldScale);
-								m_data.m_highlight.Draw(context);
-							}
+							m_data.m_selectedObjects_hover.push_back(obj);
+							m_data.m_highlight.m_dstRect = obj->MapRect(m_data.m_worldPos, m_data.m_worldScale);
+							m_data.m_highlight.Draw(context);
 						}
+					}
 
-						for (auto& ev : obj->m_mapData->event_data)
-						{
-							SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					for (auto& ev : obj->m_mapData->event_data)
+					{
+						SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-							glm::vec2 coord = { (float)ev.pos.x, (float)ev.pos.y };
-							coord *= 16.0f;
-							coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
-							mathf::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
+						glm::vec2 coord = { (float)ev.pos.x, (float)ev.pos.y };
+						coord *= 16.0f;
+						coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
+						mathf::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
 
-							std::string strID = fmt::format("{}", ev.lcfEvent.ID);
-							//SDL_FRect rect = { ev.pos.x - 4.0f, ev.pos.y - 4.0f, 8.0f, 8.0f };
-							//SDL_RenderFillRect(context.Renderer, &rect);
-							ShowTextAtPos(context, strID, coord, ev.lcfEvent.ID);
-						}
+						std::string strID = fmt::format("{}", ev.lcfEvent.ID);
+						//SDL_FRect rect = { ev.pos.x - 4.0f, ev.pos.y - 4.0f, 8.0f, 8.0f };
+						//SDL_RenderFillRect(context.Renderer, &rect);
+						ShowTextAtPos(context, strID, coord, ev.lcfEvent.ID);
 					}
 				}
 			}
@@ -344,13 +338,13 @@ void EidolistCore::DrawGrid(glm::vec2& worldPos, glm::vec2& worldScale, glm::ive
 
 void EidolistCore::DrawMapEventTags(const glm::vec2& worldPos, const glm::vec2& worldScale, SDLContext& context)
 {
-	PushStyleCompact();
-
 	int tagid = 0;
 	auto& proj = m_data.m_projectGui;
 
 	if (proj->NMapsLoaded() <= 0)
 		return;
+
+	PushStyleCompact();
 
 	for (int mapIndex = 0; mapIndex < proj->NMapsLoaded(); mapIndex++)
 	{
@@ -433,12 +427,12 @@ void EidolistCore::ShowMainMenu(SDLContext& context)
 		MenuTabToggle(EMainMenuTab::mtDatabase, "database", switch_tab);
 		ImGui::EndDisabled();
 
-		ImGui::BeginDisabled();
-		color::PushStyleColor(ImGuiCol_Text, EStyleColor::White, 0.4f);
-		MenuTabToggle(EMainMenuTab::mtMapComparison, "map comparison", switch_tab);
-		MenuTabToggle(EMainMenuTab::mtWorldGraph, "world graph", switch_tab);
-		ImGui::PopStyleColor(1);
-		ImGui::EndDisabled();
+		//ImGui::BeginDisabled();
+		//color::PushStyleColor(ImGuiCol_Text, EStyleColor::White, 0.4f);
+		//MenuTabToggle(EMainMenuTab::mtMapComparison, "map comparison", switch_tab);
+		//MenuTabToggle(EMainMenuTab::mtWorldGraph, "world graph", switch_tab);
+		//ImGui::PopStyleColor(1);
+		//ImGui::EndDisabled();
 
 		if (switch_tab != EMainMenuTab::mtNULL)
 			m_data.m_activeTab = switch_tab;

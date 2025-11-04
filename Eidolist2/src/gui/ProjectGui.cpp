@@ -42,6 +42,12 @@ void ProjectGui::Show(SDLContext& context)
 	ImGui::Spacing();
 	ImGui::SameLine();
 
+	bool updateFilter = false;
+	if (ImGui::Button("Update"))
+		updateFilter = true;
+
+	ImGui::SameLine();
+
 	if(m_expansionLevel > 0)
 		if (ImGui::Button("< Shrink"))
 			m_expansionLevel--;
@@ -52,8 +58,6 @@ void ProjectGui::Show(SDLContext& context)
 
 	m_expansionLevel = std::clamp(m_expansionLevel, 0, 1);
 
-
-	bool updateFilter = false;
 	if (ImGui::InputText("Filter", &m_currentFilter))
 		updateFilter = true;
 

@@ -105,7 +105,7 @@ void ProjectSelectDialog::ShowMainWindow(SDLContext& context)
 		PushStyleCompact();
 		//if (ImGui::CollapsingHeader("Advanced", 0))
 		{
-			ShowProjectChecksum(context, 0, "Project A");
+			//ShowProjectChecksum(context, 0, "Project A");
 			//ShowProjectChecksum(context, 1, "Project B");
 			//ShowProjectChecksum(context, 2, "Project C");
 			
