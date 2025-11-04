@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 #include "LCFTypes.h"
-#include "../graph/WikiData.h"
+#include "meta/WikiData.h"
 #include "GLMIncludes.h"
 #include "Rect.h"
 #include "ListProjectData.h"

@@ -1,11 +1,12 @@
 #pragma once
 #include "BaseObj.h"
-#include "../TilesetHelper_Texture.h"
-#include "../projectdata/ProjectData.h"
-#include "../Spritesheet.h"
-#include "../WindowArea.h"
-#include "../MapLayers.h"
-#include "../AutotileData.h"
+#include "TilesetHelper_Texture.h"
+#include "ProjectData.h"
+#include "Spritesheet.h"
+#include "SpriteObj.h"
+#include "WindowArea.h"
+#include "MapLayers.h"
+#include "AutotileData.h"
 
 struct EventObj : public SimpleObject
 {

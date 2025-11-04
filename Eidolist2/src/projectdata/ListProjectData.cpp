@@ -1,5 +1,5 @@
 #include "ListProjectData.h"
-#include "../gui/ImguiStyle.h"
+#include "ImguiStyle.h"
 
 
 list_data::ListCommand::ListCommand(const lcf::rpg::EventCommand& _data)

@@ -1,6 +1,6 @@
 #pragma once
 #include "LCFIncludes.h"
-#include "Types.h"
+
 
 using LCFMap = std::unique_ptr<lcf::rpg::Map>;
 using LCFDatabase = std::unique_ptr<lcf::rpg::Database>;

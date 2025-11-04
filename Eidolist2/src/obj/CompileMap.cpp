@@ -1,8 +1,7 @@
 #include "CompileMap.h"
-#include "../Transform.h"
-#include "../AssetLoader.h"
-#include "../AutotileData.h"
-#include "../gui/ImguiStyle.h"
+#include "AssetLoader.h"
+#include "AutotileData.h"
+#include "ImguiStyle.h"
 
 PTexture comp_map::MakeExpandedChipset(SDLContext& context, MapData* map_data)
 {

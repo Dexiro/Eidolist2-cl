@@ -7,19 +7,16 @@
 #include "SDLFun.h"
 
 #include "SDLTypes.h"
-#include "MapDiff.h"
 #include "AssetLoader.h"
-#include "Tileset.h"
 #include "TilesetHelper.h"
 #include "TilesetHelper_Texture.h"
-#include "Transform.h"
-#include "projectdata/ProjectGui.h"
-#include "projectdata/CompareProjectData.h"
-#include "gui/ProjectSelectDialog.h"
-#include "obj/MapObj.h"
+#include "ProjectGui.h"
+#include "CompareProjectData.h"
+#include "ProjectSelectDialog.h"
+#include "MapObj.h"
 #include "Spritesheet.h"
 #include "GLMIncludes.h"
-#include "gui/ImguiStyle.h"
+#include "ImguiStyle.h"
 
 
 
@@ -109,7 +106,7 @@ public:
 
 	void DrawMapEventTags(const glm::vec2& worldPos, const glm::vec2& worldScale, SDLContext& context);
 	void ShowMapInfo(const glm::vec2& worldPos, const glm::vec2& worldScale, SDLContext& context);
-	void ShowWorldGraph(const glm::vec2& worldPos, const glm::vec2& worldScale, SDLContext& context);
+
 
 protected:
 	AppData m_data;

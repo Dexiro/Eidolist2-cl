@@ -1,6 +1,6 @@
 #pragma once
 #include "SDLTypes.h"
-#include "obj/BaseObj.h"
+#include "BaseObj.h"
 #include "TilesetHelper.h"
 
 namespace tsh

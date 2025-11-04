@@ -1,9 +1,10 @@
 #include "LoadProject.h"
 #include "LCFTypes.h"
 #include <fmt/format.h>
-#include "../TilesetHelper.h"
-#include "../MapLayers.h"
-#include "../AutotileData.h"
+#include "TilesetHelper.h"
+#include "MapLayers.h"
+#include "AutotileData.h"
+#include "MathFun.h"
 #include "sha1.h"
 
 #include "ListProjectData.h"
@@ -51,11 +52,6 @@ bool LoadProject::LoadProject(ProjectData* project_data, std::string directory)
 	return success;
 }
 
-void LoadProject::LoadMapTree(ProjectData* project_data)
-{
-
-
-}
 
 void LoadProject::LoadMapList(ProjectData* project_data)
 {
@@ -289,10 +285,10 @@ void LoadProject::GetTileData(MapData* map_data)
 			if ((td.lowerPassData & Passability::Wall) == Passability::Wall)
 			{
 				int modTileID = td.lowerTileID % 50;
-				if (math::in_range(modTileID, 20, 23) ||
-					math::in_range(modTileID, 33, 37) ||
-					math::in_range(modTileID, 42, 43) ||
-					math::in_range(modTileID, 45, 46))
+				if (mathf::in_range(modTileID, 20, 23) ||
+					mathf::in_range(modTileID, 33, 37) ||
+					mathf::in_range(modTileID, 42, 43) ||
+					mathf::in_range(modTileID, 45, 46))
 				{
 					td.lowerPassData = Passability::Circle;
 				}

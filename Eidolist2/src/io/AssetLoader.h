@@ -1,7 +1,7 @@
 #pragma once
 #include "CommonIncludes.h"
-#include "obj/BaseObj.h"
-#include "projectdata/ProjectData.h"
+#include "BaseObj.h"
+#include "ProjectData.h"
 #include "Spritesheet.h"
 
 namespace db
@@ -21,7 +21,7 @@ namespace db
 		TextureDB(TextureDB&&) = delete;
 		TextureDB& operator=(TextureDB&&) = delete;
 
-
+		// Lazy implementation, I just have a load of versions of LoadTexture because I'm bad at figuring out template stuff...
 		bool LoadTexture(SDLContext& context, std::string asset_tag, std::string path, PTexture& texture, bool useAlpha = true)
 		{
 			if (texture)

@@ -2,10 +2,9 @@
 #include "json.hpp"
 #include "SDLTypes.h"
 #include "Rect.h"
-#include "obj/BaseObj.h"
+#include "BaseObj.h"
 #include "Spritesheet.h"
 using json = nlohmann::json;
-
 
 
 struct SpriteObj : public SimpleObject

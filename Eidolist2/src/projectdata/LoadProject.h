@@ -6,7 +6,7 @@
 namespace LoadProject
 {
 	bool LoadProject(ProjectData* project_data, std::string directory);
-	void LoadMapTree(ProjectData* project_data);
+
 	void LoadMapList(ProjectData* project_data);
 	bool LoadMapHeader(ProjectData* project_data, MapData* map_data, int map_id);
 	bool LoadFullMapData(ProjectData* project_data, MapData* map_data);

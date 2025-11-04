@@ -1,8 +1,8 @@
 #include "ProjectSelectDialog.h"
 #include <chrono>
 #include <thread>
-#include "../WindowArea.h"
-#include "../../external/imgui/misc/cpp/imgui_stdlib.h"
+#include "WindowArea.h"
+#include "imgui_stdlib.h"
 #include "ImguiStyle.h"
 
 static volatile bool m_threadLock = false;
@@ -99,38 +99,38 @@ void ProjectSelectDialog::ShowMainWindow(SDLContext& context)
 	if (ImGui::Begin("ProjectHashCompare", NULL, ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
 	{
 		ShowSelectProjectOptions(context, 0, "Project A (Base)");
-		ShowSelectProjectOptions(context, 1, "Project B (Working)");
-		ShowSelectProjectOptions(context, 2, "Project C (Patch)");
+		//ShowSelectProjectOptions(context, 1, "Project B (Working)");
+		//ShowSelectProjectOptions(context, 2, "Project C (Patch)");
 
 		PushStyleCompact();
-		if (ImGui::CollapsingHeader("Advanced", 0))
+		//if (ImGui::CollapsingHeader("Advanced", 0))
 		{
 			ShowProjectChecksum(context, 0, "Project A");
-			ShowProjectChecksum(context, 1, "Project B");
-			ShowProjectChecksum(context, 2, "Project C");
+			//ShowProjectChecksum(context, 1, "Project B");
+			//ShowProjectChecksum(context, 2, "Project C");
 			
-			ImGui::BeginDisabled(m_projects[0].hashes.map.empty() || m_projects[1].hashes.map.empty());
-			if (ImGui::Button("Run Comparison"))
-			{
-				std::vector<FileHashMap> hmVec;
-				hmVec.push_back(m_projects[0].hashes.map);
-				hmVec.push_back(m_projects[1].hashes.map);
+			//ImGui::BeginDisabled(m_projects[0].hashes.map.empty() || m_projects[1].hashes.map.empty());
+			//if (ImGui::Button("Run Comparison"))
+			//{
+			//	std::vector<FileHashMap> hmVec;
+			//	hmVec.push_back(m_projects[0].hashes.map);
+			//	hmVec.push_back(m_projects[1].hashes.map);
 
-				if(!m_projects[2].hashes.map.empty())
-					hmVec.push_back(m_projects[2].hashes.map);
+			//	if(!m_projects[2].hashes.map.empty())
+			//		hmVec.push_back(m_projects[2].hashes.map);
 
-				FileHasher::CombineFileHashMaps(hmVec, m_hashCombinedList, true);
-				m_bUpdateMatchingIDs = true;
-				m_bShowResults = true;
-			}
+			//	FileHasher::CombineFileHashMaps(hmVec, m_hashCombinedList, true);
+			//	m_bUpdateMatchingIDs = true;
+			//	m_bShowResults = true;
+			//}
 
-			if (!m_hashCombinedList.empty())
-			{
-				ImGui::SameLine();
-				ImGui::Checkbox("Show Results", &m_bShowResults);
-			}
-			ImGui::EndDisabled();
-			ImGui::Separator();
+			//if (!m_hashCombinedList.empty())
+			//{
+			//	ImGui::SameLine();
+			//	ImGui::Checkbox("Show Results", &m_bShowResults);
+			//}
+			//ImGui::EndDisabled();
+			//ImGui::Separator();
 		}
 		PopStyleCompact();
 	}
@@ -336,7 +336,7 @@ void ProjectSelectDialog::ShowSelectProjectOptions(SDLContext& context, int proj
 
 			if (m_projectGui)
 			{
-				m_projectGui->LoadProject(projIndex, m_projects[projIndex].path);
+				m_projectGui->LoadProject(m_projects[projIndex].path);
 			}
 		}
 

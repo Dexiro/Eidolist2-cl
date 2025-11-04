@@ -1,7 +1,7 @@
 #pragma once
 #include <bitset>
 #include <array>
-#include "graph/WikiData.h"
+#include "meta/WikiData.h"
 
 enum EMapLayer
 {

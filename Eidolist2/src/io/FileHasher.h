@@ -1,5 +1,5 @@
 #pragma once
-#include "../StdIncludes.h"
+#include "StdIncludes.h"
 #include "Cache.h"
 
 #define E2FILETYPE std::string(".e2data")

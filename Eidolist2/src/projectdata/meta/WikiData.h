@@ -1,6 +1,6 @@
 #pragma once
-#include "../StdIncludes.h"
-#include "../../external/nlohmann/json.hpp"
+#include "StdIncludes.h"
+#include "json.hpp"
 using namespace nlohmann;
 
 namespace wiki

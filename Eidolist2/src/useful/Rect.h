@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include "GLMIncludes.h"
-#include "../external/nlohmann/json.hpp"
+#include "json.hpp"
 using namespace nlohmann;
 
 

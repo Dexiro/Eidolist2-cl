@@ -1,9 +1,9 @@
 #pragma once
-#include "../CommonIncludes.h"
-#include "../projectdata/ProjectGui.h"
-#include "../../external/hash-library/sha1.h"
-#include "../../external/hash-library/md5.h"
-#include "../io/FileHasher.h"
+#include "CommonIncludes.h"
+#include "ProjectGui.h"
+#include "sha1.h"
+#include "md5.h"
+#include "FileHasher.h"
 
 class FolderSelectDialog
 {
@@ -20,12 +20,6 @@ struct ProjectInfo
 	std::string display_name = "_";
 	DirectoryHashes hashes;
 	bool refresh_cache = false;
-};
-
-struct RememberPath
-{
-	std::string projectPath;
-	std::string projectNickname;
 };
 
 class ProjectSelectDialog
@@ -46,9 +40,6 @@ protected:
 
 	FolderSelectDialog m_folderSelectDlg;
 	
-	std::vector<RememberPath> m_rememberPaths;
-	int m_rememberIndex = 0;
-
 	enum ColumnIDs
 	{
 		ColumnID_Path,

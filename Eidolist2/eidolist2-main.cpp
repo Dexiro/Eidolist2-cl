@@ -19,16 +19,12 @@ int main(int argc, char* argv[])
 	TTF_Init();
 
 	SDL_Color text_color = { 0xFF, 0xFF, 0xFF, 0xFF };
-	//std::string fontPath = TEMPCONFIGS + "Fonts\\Arvo\\Arvo-Regular.ttf";
-	//std::string fontPath = TEMPCONFIGS + "Fonts\\Roboto\\static\\Roboto-Regular.ttf";
-	//std::string fontPath = TEMPCONFIGS + "Fonts\\Roboto_Mono\\RobotoMono-VariableFont_wght.ttf";
-	//std::string fontPath = TEMPCONFIGS + "Fonts\\Roboto_Slab\\RobotoSlab-VariableFont_wght.ttf";
-	//std::string fontPath = TEMPCONFIGS + "Fonts\\Slabo_27px\\Slabo27px-Regular.ttf";
-	//TTF_Font* ttf_font = TTF_OpenFont(fontPath.c_str(), 14);
-	//context.Fonts.push_back(ttf_font);
-	//ttf_font = TTF_OpenFont(fontPath.c_str(), 22);
-	//context.Fonts.push_back(ttf_font);
-	//context.TtfEngine = TTF_CreateRendererTextEngine(context.Renderer);
+	std::string fontPath = TEMPCONFIGS + "Fonts\\Slabo_27px\\Slabo27px-Regular.ttf";
+	TTF_Font* ttf_font = TTF_OpenFont(fontPath.c_str(), 14);
+	context.Fonts.push_back(ttf_font);
+	ttf_font = TTF_OpenFont(fontPath.c_str(), 22);
+	context.Fonts.push_back(ttf_font);
+	context.TtfEngine = TTF_CreateRendererTextEngine(context.Renderer);
 
 	std::unique_ptr<EidolistCore> eidolistCore = std::make_unique<EidolistCore>();
 
@@ -36,7 +32,7 @@ int main(int argc, char* argv[])
 	{
 		SDL_SetRenderDrawBlendMode(context.Renderer, SDL_BLENDMODE_BLEND);
 
-		//eidolistCore->Run(context);
+		eidolistCore->Run(context);
 	}
 
 	eidolistCore.reset();

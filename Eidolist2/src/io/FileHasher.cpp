@@ -1,6 +1,6 @@
 #include "FileHasher.h"
-#include "../../external/hash-library/sha1.h"
-#include "../../external/hash-library/md5.h"
+#include "sha1.h"
+#include "md5.h"
 #include <fmt/format.h>
 #include <fmt/chrono.h>
 

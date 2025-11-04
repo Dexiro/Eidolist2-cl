@@ -1,13 +1,13 @@
 #include "SDLFun.h"
+#include "GLMIncludes.h"
+#include "MathFun.h"
 
-
-
-static void sdlf::DrawArrow(SDLContext& context, glm::vec2 start, glm::vec2 end, bool dotted)
+void sdlf::DrawArrow(SDLContext& context, glm::vec2 start, glm::vec2 end, bool dotted)
 {
 	glm::vec2 between = end - start;
 	glm::vec2 normal = glm::normalize(between);
-	glm::vec2 r1 = end + (glm::rotate(normal, DegToRad(-150.0f)) * 10.0f);
-	glm::vec2 r2 = end + (glm::rotate(normal, DegToRad(150.0f)) * 10.0f);
+	glm::vec2 r1 = end + (glm::rotate(normal, mathf::DegToRad(-150.0f)) * 10.0f);
+	glm::vec2 r2 = end + (glm::rotate(normal, mathf::DegToRad(150.0f)) * 10.0f);
 
 	float len = glm::length(between);
 	if (dotted)

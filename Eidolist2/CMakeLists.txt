@@ -94,6 +94,8 @@ src/obj/BaseObj.h
 src/obj/BaseObj.cpp
 src/obj/CompileMap.h
 src/obj/CompileMap.cpp
+src/obj/SDLTexture.h
+src/obj/SDLTexture.cpp
 
 src/projectdata/Project.h
 src/projectdata/Project.cpp
@@ -146,7 +148,7 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 
-target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/obj external/imgui external/imgui/backends external/imgui/misc/cpp external/nlohmann/single_include/nlohmann external/hash-library external/liblcf/src )
+target_include_directories(eidolist2 PRIVATE src src/includes src/useful src/projectdata src/io src/gui src/obj external/imgui external/imgui/backends external/imgui/misc/cpp external/nlohmann/single_include/nlohmann external/hash-library external/liblcf/src )
 
 set(SDL_STATIC ON)
 add_subdirectory(external/SDL EXCLUDE_FROM_ALL)

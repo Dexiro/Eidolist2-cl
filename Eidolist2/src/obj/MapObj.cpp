@@ -1,6 +1,6 @@
 #include "MapObj.h"
-#include "../Transform.h"
-#include "../AssetLoader.h"
+#include "MathFun.h"
+#include "AssetLoader.h"
 #include "CompileMap.h"
 
 
@@ -180,7 +180,7 @@ rect::FRect MapObj::MapRect(glm::vec2 wpos, glm::vec2 wscale)
 	glm::vec2 size = { (float)m_mapData->lcfMap->width, (float)m_mapData->lcfMap->height };
 	size *= 16.0f * m_scale * wscale;
 	glm::vec2 pos;
-	tr::worldToScreen(pos, m_pos, wpos, wscale);
+	mathf::worldToScreen(pos, m_pos, wpos, wscale);
 	return rect::FRect(pos.x, pos.y, size.x, size.y);
 }
 

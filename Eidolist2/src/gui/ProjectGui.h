@@ -3,7 +3,7 @@
 #include "SDLTypes.h"
 
 #include "Project.h"
-#include "../obj/MapObj.h"
+#include "MapObj.h"
 
 static std::string to_lower(std::string str)
 {
@@ -29,9 +29,8 @@ protected:
 
 	ImVector<int> m_selection;
 
-	std::array<bool, 3> m_selectedTab;
+	//std::array<bool, 3> m_selectedTab;
 
-	//char m_filter[32] = "";
 	bool m_bOpen;
 	int m_id = 0;
 	bool m_initFilter = true;

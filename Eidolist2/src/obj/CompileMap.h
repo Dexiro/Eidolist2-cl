@@ -1,8 +1,8 @@
 #pragma once
-#include "../TilesetHelper_Texture.h"
-#include "../projectdata/ProjectData.h"
-#include "../Spritesheet.h"
-#include "../MapLayers.h"
+#include "TilesetHelper_Texture.h"
+#include "ProjectData.h"
+#include "Spritesheet.h"
+#include "MapLayers.h"
 
 namespace comp_map
 {

@@ -1,29 +1,22 @@
 #include "ProjectGui.h"
 #include "imgui.h"
 #include "imgui_stdlib.h"
-#include "../gui/ImguiStyle.h"
-#include "../MapLayers.h"
+#include "ImguiStyle.h"
+#include "MapLayers.h"
 
 ProjectGui::ProjectGui(int id)
 {
 	m_bOpen = true;
 	m_id = id;
-	m_selectedProject = 0;
 	m_expansionLevel = 0;
-	m_selectedTab = { true, false, false };
+	//m_selectedTab = { true, false, false };
 }
 
 void ProjectGui::Show(SDLContext& context)
 {
-	if (!m_data[m_selectedProject]) return;
+	if (!m_data) return;
 
-	//static rect::FRect windowArea = warea::GetArea(context, {0.25f, 0.0f}, {0.30f, 1.0f}).Shrink(8.0f);
-	//ImGui::SetNextWindowSize({ windowArea.Size().x, windowArea.Size().y } , ImGuiCond_Appearing);
-	//ImGui::SetNextWindowPos({ windowArea.Pos().x, windowArea.Pos().y }, ImGuiCond_Appearing);
-	//{
-	//// Main body of the Demo window starts here.
-	//std::string windowName = fmt::format("Map Tree");
-	//if (!ImGui::Begin(windowName.c_str(), &m_bOpen, ImGuiWindowFlags_NoSavedSettings))
+
 	bool open = true;
 	std::string windowName = "Map Tree";
 
@@ -59,49 +52,17 @@ void ProjectGui::Show(SDLContext& context)
 
 	m_expansionLevel = std::clamp(m_expansionLevel, 0, 1);
 
-	//static const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
-	//static const float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
 
 	bool updateFilter = false;
 	if (ImGui::InputText("Filter", &m_currentFilter))
 		updateFilter = true;
-
-	ImGui::BeginTabBar("tabs", ImGuiTabBarFlags_None);
-	if (ImGui::BeginTabItem("Base"))
-	{
-		if (m_selectedProject != 0)
-		{
-			m_selectedProject = 0;
-			updateFilter = true;
-		}
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("Work"))
-	{
-		if (m_selectedProject != 1)
-		{
-			m_selectedProject = 1;
-			updateFilter = true;
-		}
-		ImGui::EndTabItem();
-	}
-	if (ImGui::BeginTabItem("Patch"))
-	{
-		if (m_selectedProject != 2)
-		{
-			m_selectedProject = 2;
-			updateFilter = true;
-		}
-		ImGui::EndTabItem();
-	}
-	ImGui::EndTabBar();
 
 	if (updateFilter || m_initFilter)
 	{
 		m_initFilter = false;
 		std::string filterLowerCase = to_lower(m_currentFilter);
 		m_filteredList.clear();
-		for (int row_n = 0; row_n < NMaps(m_selectedProject); row_n++)
+		for (int row_n = 0; row_n < NMaps(); row_n++)
 		{
 			if (m_currentFilter.empty())
 			{
@@ -109,7 +70,7 @@ void ProjectGui::Show(SDLContext& context)
 			}
 			else
 			{
-				MapData* map_data = GetMapData(m_selectedProject, row_n);
+				MapData* map_data = GetMapData(row_n);
 				if (!map_data)
 					continue;
 
@@ -165,7 +126,7 @@ void ProjectGui::Show(SDLContext& context)
 			{
 				for (int row_n = clipper.DisplayStart; row_n < clipper.DisplayEnd; row_n++)
 				{
-					MapData* map_data = GetMapData(m_selectedProject, m_filteredList[row_n]);
+					MapData* map_data = GetMapData(m_filteredList[row_n]);
 
 					const bool item_is_selected = m_selection.contains(map_data->map_id);
 					ImGui::PushID(map_data->map_id);
@@ -195,29 +156,18 @@ void ProjectGui::Show(SDLContext& context)
 					if (ImGui::TableSetColumnIndex(ColumnID_Action))
 					{
 						MapObj* mapObj = nullptr;
-						for (int i = 0; i < NMapsLoaded(m_selectedProject); i++)
+						for (int i = 0; i < NMapsLoaded(); i++)
 						{
-							if (map_data->map_id == m_loadedMapsByProject[m_selectedProject][i]->m_mapData->map_id)
-								mapObj = m_loadedMapsByProject[m_selectedProject][i].get();
+							if (map_data->map_id == m_loadedMaps[i]->m_mapData->map_id)
+								mapObj = m_loadedMaps[i].get();
 						}
 
 						if (!mapObj)
 						{
 							if (ImGui::SmallButton("Load"))
 							{
-								//if (m_selectedProject == 1)
-								//{
-								//	glm::vec2 pos(0.0f, 0.0f);
-								//	LoadMapObj(context, 0, map_data->map_id, pos);
-								//	LoadMapObj(context, m_selectedProject, map_data->map_id, pos);
-								//	//GetMapObjByID(m_selectedProject, map_data->map_id)->AddComparisonLayers(context, GetMapData(0, map_data->map_id));
-								//}
-								//else
-								{
-									glm::vec2 pos(0.0f, 0.0f);
-									LoadMapObj(context, m_selectedProject, map_data->map_id, pos);
-								}
-								//m_requestLoadMapIDs.push_back();
+								glm::vec2 pos(0.0f, 0.0f);
+								LoadMapObj(context, map_data->map_id, pos);
 							}
 						}
 					}

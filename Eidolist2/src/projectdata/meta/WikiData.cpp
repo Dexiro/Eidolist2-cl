@@ -1,6 +1,6 @@
 #include "WikiData.h"
 #include <cpr/cpr.h>
-#include "../io/Cache.h"
+#include "Cache.h"
 
 //"locations": [
 //{

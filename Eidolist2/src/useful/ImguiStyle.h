@@ -1,7 +1,8 @@
 #pragma once
-#include "../../external/imgui/imgui.h"
-#include "../SDLTypes.h"
+#include "imgui.h"
+#include "SDLTypes.h"
 
+// enjoy my random made up colour names :]
 enum EStyleColor
 {
 	Null = 0,

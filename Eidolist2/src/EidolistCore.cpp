@@ -1,14 +1,12 @@
 #include "EidolistCore.h"
 #include "MapLayers.h"
 #include "WindowArea.h"
-#include "gui/ImguiStyle.h"
-#include "graph/WikiData.h"
+#include "ImguiStyle.h"
+#include "meta/WikiData.h"
 #include "GLMIncludes.h"
+#include "SDLFun.h"
 
 SDL_Semaphore* gSemaphore = nullptr;
-
-
-
 
 
 EidolistCore::EidolistCore()
@@ -19,23 +17,6 @@ EidolistCore::~EidolistCore()
 {
 }
 
-//struct WorkerData
-//{
-//	NodeGraph* graph;
-//	Project* project;
-//};
-//int worker(void* data)
-//{
-//	WorkerData* wdata = (WorkerData*)data;
-//	Project* project = wdata->project;
-//	NodeGraph* graph = wdata->graph;
-//	delete wdata;
-//
-//	graph->Init(project->Data());
-//	graph->CalculateDepthFromOrigin(11);
-//
-//
-//}
 
 void EidolistCore::Init(SDLContext& context)
 {
@@ -164,12 +145,12 @@ bool EidolistCore::Run(SDLContext& context)
 			m_data.m_selectedObjects_hover.clear();
 			for (int projIndex = 0; projIndex < 3; projIndex++)
 			{
-				if (m_data.m_projectGui->NMapsLoaded(projIndex) <= 0)
+				if (m_data.m_projectGui->NMapsLoaded() <= 0)
 					continue;
 
-				for (int mapIndex = 0; mapIndex < m_data.m_projectGui->NMapsLoaded(projIndex); mapIndex++)
+				for (int mapIndex = 0; mapIndex < m_data.m_projectGui->NMapsLoaded(); mapIndex++)
 				{
-					MapObj* obj = m_data.m_projectGui->GetMapObjByIndex(projIndex, mapIndex);
+					MapObj* obj = m_data.m_projectGui->GetMapObjByID(mapIndex);
 					if (obj)
 					{
 						obj->Draw(context, m_data.m_worldPos, m_data.m_worldScale);
@@ -190,7 +171,7 @@ bool EidolistCore::Run(SDLContext& context)
 							glm::vec2 coord = { (float)ev.pos.x, (float)ev.pos.y };
 							coord *= 16.0f;
 							coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
-							tr::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
+							mathf::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
 
 							std::string strID = fmt::format("{}", ev.lcfEvent.ID);
 							//SDL_FRect rect = { ev.pos.x - 4.0f, ev.pos.y - 4.0f, 8.0f, 8.0f };
@@ -210,7 +191,7 @@ bool EidolistCore::Run(SDLContext& context)
 			ShowMapInfo(m_data.m_worldPos, m_data.m_worldScale, context);
 
 			glm::vec2 caretPos = glm::vec2(0.0f);
-			tr::worldToScreen(caretPos, m_data.m_mapCaret, m_data.m_worldPos, m_data.m_worldScale);
+			mathf::worldToScreen(caretPos, m_data.m_mapCaret, m_data.m_worldPos, m_data.m_worldScale);
 			m_data.m_mapCursor.Draw(context, caretPos);
 		}
 
@@ -253,7 +234,7 @@ void EidolistCore::SDLInput(AppData& data, ImGuiIO& io)
 		if (data.m_e.type == SDL_EVENT_MOUSE_WHEEL && !io.WantCaptureMouse)
 		{
 			glm::vec2 offset = glm::vec2(0.0f); //= (mousePos - worldPos) / worldScale;
-			tr::screenToWorld(offset, data.m_mousePos, data.m_worldPos, data.m_worldScale);
+			mathf::screenToWorld(offset, data.m_mousePos, data.m_worldPos, data.m_worldScale);
 
 			if (data.m_e.wheel.y == -1) //negative means the scroll wheel has gone away from the user
 			{
@@ -272,7 +253,7 @@ void EidolistCore::SDLInput(AppData& data, ImGuiIO& io)
 				}
 			}
 
-			tr::worldToScreen(offset, offset, data.m_worldPos, data.m_worldScale);
+			mathf::worldToScreen(offset, offset, data.m_worldPos, data.m_worldScale);
 			data.m_worldPos += (data.m_mousePos - offset) / data.m_worldScale;
 		}
 	}
@@ -368,56 +349,53 @@ void EidolistCore::DrawMapEventTags(const glm::vec2& worldPos, const glm::vec2& 
 	int tagid = 0;
 	auto& proj = m_data.m_projectGui;
 
-	for (int projIndex = 0; projIndex < 3; projIndex++)
+	if (proj->NMapsLoaded() <= 0)
+		return;
+
+	for (int mapIndex = 0; mapIndex < proj->NMapsLoaded(); mapIndex++)
 	{
-		if (proj->NMapsLoaded(projIndex) <= 0)
-			continue;
-
-		for (int mapIndex = 0; mapIndex < proj->NMapsLoaded(projIndex); mapIndex++)
+		MapObj* obj = proj->GetMapObjByID(mapIndex);
+		if (obj)
 		{
-			MapObj* obj = proj->GetMapObjByIndex(projIndex, mapIndex);
-			if (obj)
+			if (global::visibleLayers[EMapLayer::mlEventTags])
 			{
-				if (global::visibleLayers[EMapLayer::mlEventTags])
+				for (auto transfer : obj->m_mapData->map_transfers)
 				{
-					for (auto transfer : obj->m_mapData->map_transfers)
+					if (transfer.mapName == "")
 					{
-						if (transfer.mapName == "")
-						{
-							transfer.mapName = proj->GetMapData(projIndex, transfer.mapID)->map_name;
-						}
+						transfer.mapName = proj->GetMapData(transfer.mapID)->map_name;
+					}
 
-						std::string tagText = fmt::format("{},{}", transfer.dstCoord.x, transfer.dstCoord.y);
+					std::string tagText = fmt::format("{},{}", transfer.dstCoord.x, transfer.dstCoord.y);
 
-						glm::vec2 coord = { (float)transfer.srcCoord.x, (float)transfer.srcCoord.y };
-						coord *= 16.0f;
-						coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
-						tr::worldToScreen(coord, coord, worldPos, worldScale);
+					glm::vec2 coord = { (float)transfer.srcCoord.x, (float)transfer.srcCoord.y };
+					coord *= 16.0f;
+					coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
+					mathf::worldToScreen(coord, coord, worldPos, worldScale);
 
-						if (transfer.mapID == transfer.srcMapID)
-						{
-							glm::vec2 coord2 = { (float)transfer.dstCoord.x, (float)transfer.dstCoord.y };
-							coord2 *= 16.0f;
-							coord2 += obj->m_pos + glm::vec2(8.0f, 8.0f);
-							tr::worldToScreen(coord2, coord2, worldPos, worldScale);
+					if (transfer.mapID == transfer.srcMapID)
+					{
+						glm::vec2 coord2 = { (float)transfer.dstCoord.x, (float)transfer.dstCoord.y };
+						coord2 *= 16.0f;
+						coord2 += obj->m_pos + glm::vec2(8.0f, 8.0f);
+						mathf::worldToScreen(coord2, coord2, worldPos, worldScale);
 
-							//std::string tagText = fmt::format("{}:{}", coord.x, coord.y);
-							SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0x00, 0xFF);
+						//std::string tagText = fmt::format("{}:{}", coord.x, coord.y);
+						SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0x00, 0xFF);
 
-							if (global::visibleLayers[EMapLayer::mlTransferLines])
-								DrawArrow(context, coord, coord2, false);
+						if (global::visibleLayers[EMapLayer::mlTransferLines])
+							sdlf::DrawArrow(context, coord, coord2, false);
 
-							//SDL_RenderLine(context.Renderer, coord.x, coord.y, coord2.x, coord2.y);
-							ShowTextAtPos(context, tagText, coord, tagid++, false);
-						}
-						else
-						{
-							SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0x00, 0x00, 0xFF);
+						//SDL_RenderLine(context.Renderer, coord.x, coord.y, coord2.x, coord2.y);
+						ShowTextAtPos(context, tagText, coord, tagid++, false);
+					}
+					else
+					{
+						SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0x00, 0x00, 0xFF);
 
-							SDL_FRect rect = { coord.x - 4.0f, coord.y - 4.0f, 8.0f, 8.0f };
-							SDL_RenderFillRect(context.Renderer, &rect);
-							ShowTextAtPos(context, transfer.mapName, coord, tagid++);
-						}
+						SDL_FRect rect = { coord.x - 4.0f, coord.y - 4.0f, 8.0f, 8.0f };
+						SDL_RenderFillRect(context.Renderer, &rect);
+						ShowTextAtPos(context, transfer.mapName, coord, tagid++);
 					}
 				}
 			}
@@ -450,7 +428,7 @@ void EidolistCore::ShowMainMenu(SDLContext& context)
 
 		MenuTabToggle(EMainMenuTab::mtLoadProject, "projects", switch_tab);
 
-		ImGui::BeginDisabled(m_data.m_projectGui->NProjectsLoaded() == 0);
+		ImGui::BeginDisabled(!m_data.m_projectGui->Data());
 		MenuTabToggle(EMainMenuTab::mtMapTree, "map tree", switch_tab);
 		MenuTabToggle(EMainMenuTab::mtDatabase, "database", switch_tab);
 		ImGui::EndDisabled();
@@ -570,48 +548,6 @@ void EidolistCore::ShowLayerMenu(SDLContext& context)
 	ImGui::End();
 }
 
-//for (float sx = 0; sx < windowSize.x; sx++)
-//{
-//	float wx = (sx / worldScale.x) - worldPos.x;
-//	if ((int)wx % 320 == 0)
-//	{
-//		SDL_SetRenderDrawColor(context.Renderer, 0x18, 0x18, 0x18, 0xFF);
-//		SDL_RenderLine(context.Renderer, sx, 0, sx, windowSize.y);
-//	}
-//	else if ((int)wx % 80 == 0)
-//	{
-//		SDL_SetRenderDrawColor(context.Renderer, 0x24, 0x24, 0x24, 0xFF);
-//		SDL_RenderLine(context.Renderer, sx, 0, sx, windowSize.y);
-//	}
-//}
-//for (float sy = 0; sy < windowSize.y; sy++)
-//{
-//	float wy = (sy / worldScale.y) - worldPos.y;
-//	if ((int)wy % 240 == 0)
-//	{
-//		SDL_SetRenderDrawColor(context.Renderer, 0x18, 0x18, 0x18, 0xFF);
-//		SDL_RenderLine(context.Renderer, 0, sy, windowSize.x, sy);
-//	}
-//	else if ((int)wy % 60 == 0)
-//	{
-//		SDL_SetRenderDrawColor(context.Renderer, 0x24, 0x24, 0x24, 0xFF);
-//		SDL_RenderLine(context.Renderer, 0, sy, windowSize.x, sy);
-//	}
-//}
-
-//void MapNode::GetConnections(int _map_id, ProjectData* project_data, NodeGraph* graph)
-//{
-//	map_id = _map_id;
-//	if (project_data->m_map_data[map_id] && project_data->m_map_data[map_id]->lcfMap)
-//	{
-//		project_data->m_map_data[map_id]->map_name;
-//		for (auto& id : project_data->m_map_data[map_id]->connected_maps)
-//		{
-//			connections.push_back(graph->flatNodeList[id].get());
-//		}
-//	}
-//}
-
 void EidolistCore::ResetScreen(SDLContext& context, ImGuiIO& io)
 {
 	SDL_SetRenderScale(context.Renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
@@ -651,34 +587,3 @@ void EidolistCore::ShowMapInfo(const glm::vec2& worldPos, const glm::vec2& world
 		ImGui::End();
 	}
 }
-
-void EidolistCore::ShowWorldGraph(const glm::vec2& worldPos, const glm::vec2& worldScale, SDLContext& context)
-{
-	//if (ImGui::Begin("Tree Control", NULL, 0))
-	//{
-	//	if (ImGui::Button("Load"))
-	//		startTree = true;
-	//}
-	//ImGui::End();
-
-	//int iNodes = 0;
-	//int nodeTextUID = 1000;
-	//for (auto& node : tree.nodeList)
-	//{
-	//	if (iNodes++ >= tree.renderNodes)
-	//		break;
-
-	//	rect::FRect rect = rect::FRect(node.dstRect.x, node.dstRect.y, node.dstRect.w * 2.0f, node.dstRect.h * 2.0f);
-	//	rect = rect.Move(worldPos).Scale(worldScale);
-
-	//	SDL_FRect fr = rect.SDLRect();
-
-	//	SDL_FPoint point = { mousePos.x, mousePos.y };
-	//	if (SDL_PointInRectFloat(&point, &fr))
-	//	{
-	//		auto& location = global::wikiData.locations[node.locationId];
-	//		ShowTextAtPos(context, location.name, rect.Center(), nodeTextUID++, true);
-	//	}
-	//}
-}
-
