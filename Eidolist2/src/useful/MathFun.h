@@ -1,6 +1,7 @@
 #pragma once
 #include "GLMIncludes.h"
 
+// Helpful Math Functions
 
 namespace mathf
 {

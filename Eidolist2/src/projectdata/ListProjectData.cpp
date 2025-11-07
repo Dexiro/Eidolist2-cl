@@ -57,7 +57,7 @@ void list_data::DisplayList(std::vector<ListCommand>& list)
 	color::PushStyleColor(ImGuiCol_Text, EStyleColor::PastelGreen);
 	for (auto item : list)
 	{
-		//ImGui::TextUnformatted(item.commandDisplayStr.c_str());
+		ImGui::TextUnformatted(item.commandDisplayStr.c_str());
 	}
 	ImGui::PopStyleColor();
 }

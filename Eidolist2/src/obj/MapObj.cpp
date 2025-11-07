@@ -60,7 +60,7 @@ void MapObj::AddComparisonLayers(SDLContext& context, MapData* compare_data)
 	int id = m_mapData->map_id;
 
 	PTexture tileCompLayer;
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlTileComparison]), tileCompLayer, &comp_map::MakeTileComparisonLayer, m_mapData, compare_data, m_spritesheet);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlTileComparison]), tileCompLayer, &comp_map::MakeTileComparisonLayer, m_mapData, compare_data, m_spritesheet);
 
 	m_dstTextures.emplace(_mlNames[mlTileComparison], tileCompLayer);
 
@@ -106,15 +106,17 @@ void MapObj::CompileMap(SDLContext& context, ProjectData* data)
 	std::string dir = data->m_directory;
 	int id = m_mapData->map_id;
 
+	// Generate textures or (if already loaded) pull them from the asset DB 
 	PTexture chipsetEx, lowerLayer, upperLayer, collisionLayer, eventLayer, terrainIDLayer, charsetLayer;
-	db::_texDB.GetTexture(context, db::ChipsetExTag(m_mapData->chipset_path), chipsetEx, &comp_map::MakeExpandedChipset, m_mapData);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlLower]), lowerLayer, &comp_map::MakeLowerLayer, m_mapData);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlUpper]), upperLayer, &comp_map::MakeUpperLayer, m_mapData);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlCollision]), collisionLayer, &comp_map::MakeTileCollisionLayer, m_mapData, m_spritesheet);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlEvent]), eventLayer, &comp_map::MakeEventLayer, m_mapData, m_spritesheet);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlTerrainID]), terrainIDLayer, &comp_map::MakeTerrainIDLayer, m_mapData, m_spritesheet);
-	db::_texDB.GetTexture(context, db::MapLayerTag(dir, id, _mlNames[(int)mlCharset]), charsetLayer, &comp_map::MakeCharsetLayer, m_mapData);
+	db::_texDB.GetTexture(context, db::GetAssetTag(m_mapData->chipset_path), chipsetEx, &comp_map::MakeExpandedChipset, m_mapData);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlLower]), lowerLayer, &comp_map::MakeLowerLayer, m_mapData);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlUpper]), upperLayer, &comp_map::MakeUpperLayer, m_mapData);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlCollision]), collisionLayer, &comp_map::MakeTileCollisionLayer, m_mapData, m_spritesheet);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlEvent]), eventLayer, &comp_map::MakeEventLayer, m_mapData, m_spritesheet);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlTerrainID]), terrainIDLayer, &comp_map::MakeTerrainIDLayer, m_mapData, m_spritesheet);
+	db::_texDB.GetTexture(context, db::GetAssetTag(dir, id, _mlNames[(int)mlCharset]), charsetLayer, &comp_map::MakeCharsetLayer, m_mapData);
 
+	// Add textures to the map
 	m_srcTextures.emplace(_mlNames[mlChipsetEx], chipsetEx);
 	m_dstTextures.emplace(_mlNames[mlLower], lowerLayer);
 	m_dstTextures.emplace(_mlNames[mlUpper], upperLayer);
@@ -123,6 +125,7 @@ void MapObj::CompileMap(SDLContext& context, ProjectData* data)
 	m_dstTextures.emplace(_mlNames[mlTerrainID], terrainIDLayer);
 	m_dstTextures.emplace(_mlNames[mlCharset], charsetLayer);
 
+	// Create objects that will use the new texture
 	CreateDefaultLayerObj(1, EMapLayer::mlLower);
 	CreateDefaultLayerObj(2, EMapLayer::mlUpper);
 	CreateDefaultLayerObj(10, EMapLayer::mlCollision);
@@ -172,6 +175,7 @@ void MapObj::CompileMap(SDLContext& context, ProjectData* data)
 		obj->clipRect = SDL_FRect(0, 0, obj->m_texture->Width(), obj->m_texture->Height());
 		AddLayerObject(0, obj, "MapName", mlChipsetEx);
 	}
+
 	SortLayers();
 }
 

@@ -11,7 +11,7 @@ PTexture comp_map::MakeExpandedChipset(SDLContext& context, MapData* map_data)
 	db::_texDB.LoadTexture(context, path, path, chipsetTex);
 
 	PTexture chipsetExTexture = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(chipsetTex, global::_atData.setDCompileRects, chipsetExTexture, context);
+	CompileTextureFromTileset(chipsetTex, global::_atData.setDCompileRects, chipsetExTexture, context);
 
 	return chipsetExTexture;
 }
@@ -36,10 +36,10 @@ PTexture comp_map::MakeUpperLayer(SDLContext& context, MapData* map_data)
 	}
 
 	PTexture chipsetEx;
-	db::_texDB.GetTexture(context, db::ChipsetExTag(map_data->chipset_path), chipsetEx);
+	db::_texDB.GetTexture(context, db::GetAssetTag(map_data->chipset_path), chipsetEx);
 
 	PTexture upperLayerTexture = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(chipsetEx, cprList, upperLayerTexture, context);
+	CompileTextureFromTileset(chipsetEx, cprList, upperLayerTexture, context);
 
 	return upperLayerTexture;
 }
@@ -64,10 +64,10 @@ PTexture comp_map::MakeLowerLayer(SDLContext& context, MapData* map_data)
 	}
 
 	PTexture chipsetEx;
-	db::_texDB.GetTexture(context, db::ChipsetExTag(map_data->chipset_path), chipsetEx);
+	db::_texDB.GetTexture(context, db::GetAssetTag(map_data->chipset_path), chipsetEx);
 
 	PTexture lowerLayerTexture = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(chipsetEx, cprList, lowerLayerTexture, context);
+	CompileTextureFromTileset(chipsetEx, cprList, lowerLayerTexture, context);
 
 	return lowerLayerTexture;
 }
@@ -124,7 +124,7 @@ PTexture comp_map::MakeTileCollisionLayer(SDLContext& context, MapData* map_data
 	}
 
 	PTexture collisionLayerTexture = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(spritesheet->m_texture, cprList, collisionLayerTexture, context, map_data->map_size * 16);
+	CompileTextureFromTileset(spritesheet->m_texture, cprList, collisionLayerTexture, context, map_data->map_size * 16);
 	return collisionLayerTexture;
 }
 
@@ -151,7 +151,7 @@ PTexture comp_map::MakeEventLayer(SDLContext& context, MapData* map_data, Sprite
 	}
 
 	PTexture eventLayerTexture = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(spritesheet->m_texture, eventCPR, eventLayerTexture, context, map_data->map_size * 16);
+	CompileTextureFromTileset(spritesheet->m_texture, eventCPR, eventLayerTexture, context, map_data->map_size * 16);
 	return eventLayerTexture;
 }
 
@@ -302,6 +302,44 @@ PTexture comp_map::MakeTileComparisonLayer(SDLContext& context, MapData* map_dat
 	}
 
 	PTexture layerTex = std::make_shared<sdl::Texture>();
-	tsh::texture::CompileTextureFromTileset(spritesheet->m_texture, layerCpr, layerTex, context, map_data->map_size * 16);
+	CompileTextureFromTileset(spritesheet->m_texture, layerCpr, layerTex, context, map_data->map_size * 16);
 	return layerTex;
+}
+
+
+void comp_map::CompileTextureFromTileset(std::shared_ptr<sdl::Texture>& pTilesetTexture, std::vector<tsh::CopyRect>& copyRect, std::shared_ptr<sdl::Texture>& newTexture, SDLContext& context, glm::ivec2 fixedSize)
+{
+	SDL_Rect tsRect = { 0, 0, pTilesetTexture->Width(), pTilesetTexture->Height() };
+
+	// Calculate the size of the new texture
+	SDL_Rect rectA = tsRect;
+	if (fixedSize.x <= 0 || fixedSize.y <= 0)
+	{
+		for (auto& cpr : copyRect)
+		{
+			SDL_Rect rectB = { cpr.dst_pos.x, cpr.dst_pos.y, cpr.dst_size.x, cpr.dst_size.y };
+			SDL_GetRectUnion(&rectA, &rectB, &rectA);
+		}
+	}
+	else
+	{
+		rectA = { 0, 0, fixedSize.x, fixedSize.y };
+	}
+
+	// Create the new texture
+	newTexture->CreateEmpty(context, rectA.w, rectA.h, SDL_TextureAccess::SDL_TEXTUREACCESS_TARGET);
+
+	// Set the new texture as the render target
+	SDL_SetRenderTarget(context.Renderer, newTexture->GetTexture());
+
+	// Copy all of the extra tile parts to the new texture
+	for (auto& cpr : copyRect)
+	{
+		SDL_FRect srcRect = { cpr.src_pos.x, cpr.src_pos.y, cpr.src_size.x, cpr.src_size.y };
+		SDL_FRect dstRect = { cpr.dst_pos.x, cpr.dst_pos.y, cpr.dst_size.x, cpr.dst_size.y };
+		SDL_RenderTexture(context.Renderer, pTilesetTexture->GetTexture(), &srcRect, &dstRect);
+	}
+
+	// Reset the render target
+	SDL_SetRenderTarget(context.Renderer, NULL);
 }

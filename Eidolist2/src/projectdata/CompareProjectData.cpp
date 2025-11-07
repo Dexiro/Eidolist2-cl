@@ -14,7 +14,7 @@ void CompareDataGui::ShowMainWindow(SDLContext& context, PProjectGui& project)
 	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Appearing);
 	if (ImGui::Begin("CompareDataGui", NULL, ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
 	{
-		if (ImGui::BeginChild("CompGuiCh1", ImVec2(windowSize.x / 2.0f, 700.0f), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY, 0))
+		if (ImGui::BeginChild("CompGuiCh1", ImVec2(windowSize.x, 700.0f), ImGuiChildFlags_Borders | ImGuiChildFlags_AlwaysAutoResize | ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY, 0))
 		{
 			list_data::DisplayList(project->Data()->commonEvents);
 		}

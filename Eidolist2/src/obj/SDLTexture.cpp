@@ -47,9 +47,8 @@ namespace sdl
 					SDL_Palette* palette = SDL_GetSurfacePalette(srf);
 					if (palette && palette->ncolors > 0)
 					{
-						const SDL_PixelFormatDetails* details = SDL_GetPixelFormatDetails(m_format);
 						SDL_Color color = palette->colors[0];
-						m_colorKey = SDL_MapRGB(details, palette, color.r, color.g, color.b);
+						m_colorKey = SDL_MapRGB(SDL_GetPixelFormatDetails(m_format), palette, color.r, color.g, color.b);
 						SDL_SetSurfaceColorKey(srf, true, m_colorKey);
 					}
 				}

@@ -2,12 +2,12 @@
 
 db::TextureDB db::_texDB;
 
-std::string db::MapLayerTag(std::string project, int map_id, std::string layer_name)
+std::string db::GetAssetTag(std::string project, int map_id, std::string layer_name)
 {
 	return fmt::format("{}{}{}", project, map_id, layer_name);
 }
 
-std::string db::ChipsetExTag(std::string chipset_path)
+std::string db::GetAssetTag(std::string chipset_path)
 {
 	return fmt::format("{}EX", chipset_path);
 }

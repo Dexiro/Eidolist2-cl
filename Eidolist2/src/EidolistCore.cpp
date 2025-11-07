@@ -59,7 +59,7 @@ void EidolistCore::Init(SDLContext& context)
 
 	//color::PushStyleColor(ImGuiCol_MenuBarBg, CozyMossDark);
 	//color::PushStyleColor(ImGuiCol_FrameBg, CozyMossLight);
-	//ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 6);
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 6);
 
 	//ImVec4* colors = GetStyle().Colors;
 	//colors[ImGuiCol_TextDisabled] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
@@ -196,7 +196,6 @@ bool EidolistCore::Run(SDLContext& context)
 		//Update screen
 		SDL_RenderPresent(context.Renderer);
 	}
-
 
 	return true;
 }

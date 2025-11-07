@@ -9,7 +9,6 @@
 #include "SDLTypes.h"
 #include "AssetLoader.h"
 #include "TilesetHelper.h"
-#include "TilesetHelper_Texture.h"
 #include "ProjectGui.h"
 #include "CompareProjectData.h"
 #include "ProjectSelectDialog.h"

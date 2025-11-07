@@ -155,9 +155,9 @@ namespace db
 		std::map<std::string, db_item> db_map;
 	};
 
-	std::string MapLayerTag(std::string project, int map_id, std::string layer_name);
+	std::string GetAssetTag(std::string project, int map_id, std::string layer_name);
 
-	std::string ChipsetExTag(std::string chipset_path);
+	std::string GetAssetTag(std::string chipset_path);
 
 	extern TextureDB _texDB;
 }

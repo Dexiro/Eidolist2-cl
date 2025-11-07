@@ -1,5 +1,5 @@
 #pragma once
-#include "TilesetHelper_Texture.h"
+#include "TilesetHelper.h"
 #include "ProjectData.h"
 #include "Spritesheet.h"
 #include "MapLayers.h"
@@ -20,6 +20,6 @@ namespace comp_map
 
 
 
-
+	void CompileTextureFromTileset(std::shared_ptr<sdl::Texture>& pChipsetTexture, std::vector<tsh::CopyRect>& copyRect, std::shared_ptr<sdl::Texture>& atTex, SDLContext& context, glm::ivec2 fixedSize = glm::ivec2(0));
 
 }

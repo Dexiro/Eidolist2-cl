@@ -74,8 +74,6 @@ src/useful/ImguiStyle.h
 src/useful/ImguiStyle.cpp
 src/useful/TilesetHelper.h
 src/useful/TilesetHelper.cpp
-src/useful/TilesetHelper_Texture.h
-src/useful/TilesetHelper_Texture.cpp
 src/useful/WindowArea.h
 src/useful/WindowArea.cpp
 
