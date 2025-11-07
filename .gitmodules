@@ -22,3 +22,7 @@
 	path = Eidolist2/external/liblcf
 	url = https://github.com/EasyRPG/liblcf.git
 	branch = master
+[submodule "Eidolist2/external/SDL"]
+	path = Eidolist2/external/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	branch = release-3.2.x
