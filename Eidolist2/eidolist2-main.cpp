@@ -8,10 +8,6 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	//using namespace OIIO;
-
-	cout << "Hello CMake." << endl;
-
 	//Initialize SDL
 	SDLContext context;
 	bool bInitSDL = true;

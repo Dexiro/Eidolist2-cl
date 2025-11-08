@@ -82,14 +82,14 @@ namespace sdl
 
 	bool Texture::CreateEmpty(SDLContext& context, int w, int h, SDL_TextureAccess access)// SDL_PixelFormat* pixelFormat)
 	{
-		m_texture = SDL_CreateTexture(context.Renderer, SDL_GetWindowPixelFormat(context.Window), access, w, h);
-
-		//m_depth = depth;
 		m_width = w;
 		m_height = h;
-		m_format = (SDL_PixelFormat)SDL_GetWindowPixelFormat(context.Window);
-		SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+		m_format = SDL_PixelFormat::SDL_PIXELFORMAT_RGBA32;
 		m_scaleMode = SDL_SCALEMODE_PIXELART;
+		
+		m_texture = SDL_CreateTexture(context.Renderer, m_format, access, m_width, m_height);
+
+		SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
 		SDL_SetTextureScaleMode(m_texture, m_scaleMode);
 
 		return false;

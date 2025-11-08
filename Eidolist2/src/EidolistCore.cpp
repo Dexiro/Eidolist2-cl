@@ -39,6 +39,7 @@ void EidolistCore::Init(SDLContext& context)
 	m_data.m_spritesheet = std::make_unique<Spritesheet>();
 	m_data.m_spritesheet->LoadSpritesheet(context, TEMPCONFIGS + "DebugTiles.png", TEMPCONFIGS + "DebugTiles.json");
 
+
 	m_data.m_mapCursor.SetSprite(*m_data.m_spritesheet, "MapCursor");
 	m_data.m_selBox.SetSprite(*m_data.m_spritesheet, "SelBoxBlue");
 	m_data.m_highlight.SetSprite(*m_data.m_spritesheet, "Highlight1", false);
@@ -135,7 +136,7 @@ bool EidolistCore::Run(SDLContext& context)
 			showMapObjs = true;
 			break;
 		};
-		
+
 		if (showMapObjs)
 		{
 			if (m_data.show_layer_window)
@@ -159,20 +160,20 @@ bool EidolistCore::Run(SDLContext& context)
 						}
 					}
 
-					for (auto& ev : obj->m_mapData->event_data)
-					{
-						SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					//for (auto& ev : obj->m_mapData->event_data)
+					//{
+					//	SDL_SetRenderDrawColor(context.Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-						glm::vec2 coord = { (float)ev.pos.x, (float)ev.pos.y };
-						coord *= 16.0f;
-						coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
-						mathf::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
+					//	glm::vec2 coord = { (float)ev.pos.x, (float)ev.pos.y };
+					//	coord *= 16.0f;
+					//	coord += obj->m_pos + glm::vec2(8.0f, 8.0f);
+					//	mathf::worldToScreen(coord, coord, m_data.m_worldPos, m_data.m_worldScale);
 
-						std::string strID = fmt::format("{}", ev.lcfEvent.ID);
-						//SDL_FRect rect = { ev.pos.x - 4.0f, ev.pos.y - 4.0f, 8.0f, 8.0f };
-						//SDL_RenderFillRect(context.Renderer, &rect);
-						ShowTextAtPos(context, strID, coord, ev.lcfEvent.ID);
-					}
+					//	std::string strID = fmt::format("{}", ev.lcfEvent.ID);
+					//	//SDL_FRect rect = { ev.pos.x - 4.0f, ev.pos.y - 4.0f, 8.0f, 8.0f };
+					//	//SDL_RenderFillRect(context.Renderer, &rect);
+					//	ShowTextAtPos(context, strID, coord, ev.lcfEvent.ID);
+					//}
 				}
 			}
 
