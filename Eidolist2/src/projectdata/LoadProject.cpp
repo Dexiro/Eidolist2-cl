@@ -106,27 +106,34 @@ bool LoadProject::LoadFullMapData(ProjectData* project_data, MapData* map_data)
 
 		// Pull terrain id data from database
 		const size_t _padUpperTileIds = 144;
+		const int _AutotileTerrainCount = 18;
+
 		std::vector<int16_t> terrainIds;
-		terrainIds.insert(terrainIds.end(), chipset.terrain_data.begin() + 18, chipset.terrain_data.end());
+		terrainIds.insert(terrainIds.end(), chipset.terrain_data.begin() + _AutotileTerrainCount, chipset.terrain_data.end());
 		terrainIds.resize(terrainIds.size() + _padUpperTileIds, -1);
-		map_data->autotile_terrain_ids.insert(map_data->autotile_terrain_ids.end(), chipset.terrain_data.begin(), chipset.terrain_data.begin() + 18);
+		map_data->autotile_terrain_ids.insert(map_data->autotile_terrain_ids.end(), chipset.terrain_data.begin(), chipset.terrain_data.begin() + _AutotileTerrainCount);
 
 		// Get Parallax Path
 		map_data->parallax_path = fmt::format("{}{}/{}.png", project_data->m_directory, AssetTypePath[AssetType::atPanorama], map_data->lcfMap->parallax_name.c_str());
 
 		// Mess with the order of the terrain passability data to better suit how we intend to use it
 		// Take the non-autotile lower layer data and append the upper layer data.
+
+		const int _ChipsetDEWidth = 18;
+		const int _ChipsetDEHeight = 16;
+		const int _ChipsetDEColumnStride = 6;
+
 		ByteMap passability_data;
-		passability_data.insert(passability_data.end(), chipset.passable_data_lower.begin() + 18, chipset.passable_data_lower.end());
+		passability_data.insert(passability_data.end(), chipset.passable_data_lower.begin() + _ChipsetDEWidth, chipset.passable_data_lower.end());
 		passability_data.insert(passability_data.end(), chipset.passable_data_upper.begin(), chipset.passable_data_upper.end());
 
-		map_data->autotile_passability_data.insert(map_data->autotile_passability_data.end(), chipset.passable_data_lower.begin(), chipset.passable_data_lower.begin() + 18);
+		map_data->autotile_passability_data.insert(map_data->autotile_passability_data.end(), chipset.passable_data_lower.begin(), chipset.passable_data_lower.begin() + _AutotileTerrainCount);
 
 		// Collapse the lower/upper layer map data into a 2D array
 		tsh::CollapseArray2D<int16_t>(map_data->lcfMap->lower_layer, map_data->lower_layer, map_data->lcfMap->width, map_data->lcfMap->height);
 		tsh::CollapseArray2D<int16_t>(map_data->lcfMap->upper_layer, map_data->upper_layer, map_data->lcfMap->width, map_data->lcfMap->height);
-		tsh::CollapseArray2D<uint8_t>(passability_data, map_data->terrain_passability_data, 18, 16, 6);
-		tsh::CollapseArray2D<int16_t>(terrainIds, map_data->terrain_ids, 18, 16, 6);
+		tsh::CollapseArray2D<uint8_t>(passability_data, map_data->terrain_passability_data, _ChipsetDEWidth, _ChipsetDEHeight, _ChipsetDEColumnStride);
+		tsh::CollapseArray2D<int16_t>(terrainIds, map_data->terrain_ids, _ChipsetDEWidth, _ChipsetDEHeight, _ChipsetDEColumnStride);
 
 		LoadProject::FindMapTransfers(map_data, project_data);
 		LoadProject::GetTileData(map_data);
